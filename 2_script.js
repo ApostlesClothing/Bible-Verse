@@ -1,24 +1,22 @@
-// Set the starting date
-const startDate = new Date("2025-06-01");
-const today = new Date();
 
-// Normalize both dates to midnight (remove time part)
-startDate.setHours(0, 0, 0, 0);
-today.setHours(0, 0, 0, 0);
+const now = new Date();
 
-// Calculate the day difference
-const dayDiff = Math.floor((today - startDate) / (1000 * 60 * 60 * 24)) + 1;
+// Determine the day of the year (1–365)
+const start = new Date(now.getFullYear(), 0, 0);
+const diff = now - start;
+const oneDay = 1000 * 60 * 60 * 24;
+const dayOfYear = Math.floor(diff / oneDay);
 
+// Get DOM elements
 const photoElement = document.getElementById("daily-photo");
 const messageElement = document.getElementById("message");
 
-if (dayDiff >= 1 && dayDiff <= 50) {
-  const imgPath = `images/${dayDiff}.png`;
+// Show image corresponding to current day of year
+if (dayOfYear >= 1 && dayOfYear <= 365) {
+  const imgPath = `images/${dayOfYear}.png`;
   photoElement.src = imgPath;
-} else if (dayDiff < 1) {
-  messageElement.textContent = "The photos will start displaying on June 1, 2025.";
-  photoElement.style.display = "none";
+  messageElement.textContent = "";
 } else {
-  messageElement.textContent = "All 50 photos have been shown!";
+  messageElement.textContent = "Unable to determine the current day of the year.";
   photoElement.style.display = "none";
 }
